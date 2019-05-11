@@ -2,12 +2,14 @@ Pawn (Peon?): The pawn can only move up, moving to either the space to the left 
 it can jump straight forward to the square directly above the piece. It can also capture any piece that it ends it's movement on, save
 the initial movement.
 The pawn forms the third line with it's comrades.
+This can only move along E and F.
 
 Rook (Marquez?): The Rook can move freely left and right along the board, ending in whichever square it wishes. However, when moving up and down
 it has to two spaces, always ending in a square that was directly above or below the Rook at the end of it's movement. The rook can
 move as far as it wants during such movement, but must end in a space that has a direct line to it's starting place. It captures a piece at
 the end of it's movement, and cannot move through enemy pieces or friendly pieces.
 The rook starts in the corners of the first line.
+It moves along EF, A, DC, BC.
 
 Knight (Ninja?): The knight has the most mobility of the pieces. In order for it to move, it must either first move two squares in one of the lines
 it has and then one over, or one square up and two squares in any of the lines from that square. It captures a piece on the location it
@@ -16,21 +18,25 @@ starting square. As a possible rule, the knight can "charge" down a line, so lon
 must move four squares in that line. At the end point, it does not capture the piece it lands on, but instead captures the piece ahead of
 it.
 The knight starts on the second line.
+The knight moves along E, F, A, B, C, and then will move two squares in a different direction without crossing over itself.
 
 Bishop (Monk?): The bishop moves generally as it always had, always along diagonals. Possibly additional Rule, the bishop can "jink" on the field,
 and instead of continually moving in a straight line, at any point along the path, it can change direction, but it can only move three
 squares in the desired direction before stopping. As with the rook, the bishop cannot move through friendly or enemy pieces.
 The bishop joins the rook on the first line.
+The Bishop can move along E, F, B, C.
 
 Queen (Freddy Mercury?): The Queen can move in any of the normal directions, left and right, up and down, and combines the basic movements of the bishop and
 the rook. As such it has the same limitations, the queen cannot move through enemy and friendly pieces.
 The queen stands next to the king on the first line.
+The Queen can move along all directions, EF, F, FA, A, AB, B, BC, C, CD, D, DE, E.
 
 King (Elvis?): The king can still move only one square at a time, to each of the nearby squares. Due to the high movement of the king and large
 number of squares available for it to move to, checkmate will likely be rarer, but the rules of check still exist and protecting the king
 is important. The king can "castle" to swiftly move itself to one of the courners of the board for possibly better protection, moving
 halfway to the corner as the rook moves past the king to the other side.
 The king stands next to the queen on the first line.
+The king moves along E, F, A, B, C, D.
 
 Possible Pieces for future Development;
 
@@ -39,4 +45,5 @@ moving. The archer moves at once square a time in a similar format to the king, 
 Pieces attacked in this way are captured without moving the archer, however the archer cannot move before or after this attack.
 The archer cannot attack at anything closer than three squares, but can attack over other pieces.
 The archer starts in the second line.
+This piece might follow the way King moves.
 
