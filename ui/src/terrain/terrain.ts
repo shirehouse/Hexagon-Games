@@ -34,7 +34,7 @@ export class Terrain {
         public readonly Height: number,
         public readonly Size: number
     ) {
-        this.CellWidth = Math.floor(Size * 0.886);
+        this.CellWidth = Math.floor(Size * 0.886);  // Size * sqrt(3/4)
         this.CellHeight = Size;
         this.wHalf = Math.floor(this.CellWidth / 2);
         this.h4th = Math.floor(this.CellHeight / 4);
