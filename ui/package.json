@@ -1,0 +1,21 @@
+{
+  "name": "scorched",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc && browserify ./dist/index.js -o ./out/out.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "jquery": "^3.3.1",
+    "random-js": "^2.0.0-rc2"
+  },
+  "devDependencies": {
+    "@types/jquery": "^3.3.29",
+    "@types/random-js": "^1.0.31",
+    "browserify": "^16.2.3"
+  }
+}
