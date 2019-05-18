@@ -24,18 +24,20 @@ export class Point {
 export class Terrain {
     private readonly center: Point;
     private readonly wHalf: number; // Half Cell Width
-    private readonly h3rd: number; // 3rd Cell Height
+    private readonly h4th: number; // 4th Cell Height
     private readonly hHalf: number; // Half Cell Height
-
-
+    private readonly CellWidth: number;
+    private readonly CellHeight: number;
+    
     public constructor(
         public readonly Width: number,
         public readonly Height: number,
-        public readonly CellWidth: number,
-        public readonly CellHeight: number
+        public readonly Size: number
     ) {
+        this.CellWidth = Math.floor(Size * 0.886);
+        this.CellHeight = Size;
         this.wHalf = Math.floor(this.CellWidth / 2);
-        this.h3rd = Math.floor(this.CellHeight / 3);
+        this.h4th = Math.floor(this.CellHeight / 4);
         this.hHalf = Math.floor(this.CellHeight / 2);
         
         let midX = Math.floor(this.Height / 2);
@@ -48,11 +50,11 @@ export class Terrain {
         ctx.lineWidth = 2;
         ctx.beginPath();
         ctx.moveTo(x + this.wHalf, y);
-        ctx.lineTo(x + this.CellWidth, y + this.h3rd);
-        ctx.lineTo(x + this.CellWidth, y + this.h3rd * 2);
+        ctx.lineTo(x + this.CellWidth, y + this.h4th);
+        ctx.lineTo(x + this.CellWidth, y + (this.CellHeight - this.h4th));
         ctx.lineTo(x + this.wHalf, y + this.CellHeight);
-        ctx.lineTo(x, y + this.h3rd * 2);
-        ctx.lineTo(x, y + this.h3rd);
+        ctx.lineTo(x, y + (this.CellHeight - this.h4th));
+        ctx.lineTo(x, y + this.h4th);
         ctx.lineTo(x + this.wHalf, y);
         ctx.closePath();
         ctx.stroke();
@@ -66,7 +68,7 @@ export class Terrain {
             shiftRight = -1 * Math.floor(Math.abs(r / 2)) - xOff;
         }
         let x = this.center.x - this.wHalf + xOff * this.wHalf + (c + shiftRight) * this.CellWidth;
-        let y = this.center.y - this.hHalf - r * this.h3rd * 2;
+        let y = this.center.y - this.hHalf - r * (this.CellHeight - this.h4th);
         let l = new Point(x, y);
         return l;
     }
@@ -96,8 +98,8 @@ export class Terrain {
         let rt = r.toString();
         if (ct.length === 1) { ct = " " + ct; }
         if (rt.length === 1) { rt = " " + rt; }
-        ctx.strokeText(ct, p.x + this.hHalf / 2, p.y + this.h3rd - this.h3rd / 3);
-        ctx.strokeText(rt, p.x + this.hHalf / 2, p.y + this.h3rd + 16 - this.h3rd / 3);
+        ctx.strokeText(ct, p.x + this.hHalf / 2, p.y + this.h4th);
+        ctx.strokeText(rt, p.x + this.hHalf / 2, p.y + this.h4th + 16);
     }
 
     public render(ctx: CanvasRenderingContext2D): void {

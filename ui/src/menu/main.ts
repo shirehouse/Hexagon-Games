@@ -20,7 +20,7 @@ export class Main {
         this.canvas = <HTMLCanvasElement>c[0];
 
         this.load = $("#load");
-        this.terrian = new Terrain(this.canvas.width, this.canvas.height, 60, 60);
+        this.terrian = new Terrain(this.canvas.width, this.canvas.height, 60);
         this.load.click(() => {
             console.log('load click...');
             this.onLoad();
