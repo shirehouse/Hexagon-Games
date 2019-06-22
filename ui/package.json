@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "dev": "parcel src/index.html",
     "build": "tsc && browserify ./dist/index.js -o ./out/out.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -16,6 +17,12 @@
   "devDependencies": {
     "@types/jquery": "^3.3.29",
     "@types/random-js": "^1.0.31",
-    "browserify": "^16.2.3"
+    "@types/react": "^16.8.22",
+    "@types/react-dom": "^16.8.4",
+    "browserify": "^16.2.3",
+    "parcel-bundler": "^1.12.3",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "typescript": "^3.5.2"
   }
 }

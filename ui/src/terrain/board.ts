@@ -43,6 +43,21 @@ export class Cell {
     }
 }
 
+
+export class TriCellColor {
+    constructor(
+        public name = "default",
+        public a = "#ffcccc",
+        public b = "#ccffcc",
+        public c = "#ccccff"
+    ) {
+
+    }
+}
+
+
+
+
 export class Board {
     private readonly center: Point;
     private readonly wHalf: number; // Half Cell Width
@@ -55,6 +70,8 @@ export class Board {
     private maxR: number = undefined;
     private minC: number = undefined;
     private maxC: number = undefined;
+    public defaultColors = new TriCellColor();
+    public renderLabels = true;
 
     private readonly cells = new Map<number, Cell>();
     
@@ -103,15 +120,25 @@ export class Board {
     }
 
     public getCellColor(r: number, c: number) {
-        let a = Math.abs(c - r + 1000) % 3;
+        //let a = Math.abs(c - r + 1000) % 3;
+        let a = (c - r) % 3;
 
         if (a === 0) {
-            return "#ffcccc";
-        } if (a === 1) {
-            return "#ccffcc";
+            return this.defaultColors.a;
+        } if (a === 1 || a == -2) {
+            return this.defaultColors.b;
         } else {
-            return "#ccccff";
+            return this.defaultColors.c;
         }
+        /*if (a === 0) {
+            return "#FFCBB5";
+        }
+        if (a === 1) {
+            return "#5DEF5D";
+        }
+        else {
+            return "#0A0AC0";
+        }*/
     }
 
     public drawCell(ctx: CanvasRenderingContext2D, r: number, c: number, clr: string = undefined): void {
@@ -121,14 +148,23 @@ export class Board {
         this.drawHex(ctx, p.x, p.y);
 
         ctx.strokeStyle = '#000000';
-        ctx.font = "16px Courier";
+        ctx.font = "12px Courier";
         ctx.textBaseline = "top";
+        let d = (c + r);
         let ct = c.toString();
         let rt = r.toString();
+        let dt = d.toString();
         if (ct.length === 1) { ct = " " + ct; }
         if (rt.length === 1) { rt = " " + rt; }
-        ctx.strokeText(ct, p.x + this.hHalf / 2, p.y + this.h4th);
-        ctx.strokeText(rt, p.x + this.hHalf / 2, p.y + this.h4th + 16);
+        if (dt.length === 1) { dt = " " + dt; }
+        let th = 12;
+        let y0 = p.y + this.h4th - th / 2;
+        let x0 = p.x + this.hHalf / 2;
+        if (this.renderLabels) {
+            ctx.strokeText(ct, x0, y0);
+            ctx.strokeText(rt, x0, y0 + th * 2);
+            ctx.strokeText(dt, x0, y0 + th);
+        }
     }
 
     public defineCell(r: number, c: number) {
@@ -153,14 +189,17 @@ export class Board {
     public createCircleBoard(radiusPixels: number): void {
         let pOffset = new Point(this.wHalf, this.hHalf);
 
-        for (let r = -100; r <= 100; r++) {
-            for (let c = -100; c <= 100; c++) {
-                let p = this.getPos(r, c);
-                p.add(pOffset);
+        for (let r = -500; r <= 500; r++) {
+            for (let c = -500; c <= 500; c++) {
+                let d = (c + r)
+                //let p = this.getPos(r, c);
+                //p.add(pOffset);
 
-                if (p.distance(this.center) < radiusPixels) {
+                //if (p.distance(this.center) < radiusPixels) {
+                if (Math.abs(d) < radiusPixels && Math.abs(c) < radiusPixels && Math.abs(r) < radiusPixels) {
                     this.defineCell(r, c);
                 }
+                //}
             }
         }
     }

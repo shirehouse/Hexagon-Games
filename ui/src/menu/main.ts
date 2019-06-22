@@ -1,11 +1,12 @@
 import $ from 'jquery';
-import { Board } from '../terrain/board';
+import { Board, TriCellColor } from '../terrain/board';
 import { Random } from 'random-js';
 
 export class Main {
     public static canvas: HTMLCanvasElement;
     public static load: JQuery<HTMLCanvasElement>;
     public static board: Board;
+    public static colors: TriCellColor[];
 
     public static main() {
         console.log('main...');
@@ -28,8 +29,15 @@ export class Main {
 
     private static onRender(): void {
         let sz = parseInt(<string>$('#size').val());
+        let pieceSize = parseInt(<string>$('#pieceSize').val());
         console.log('Size: ' + sz);
-        this.board = new Board(this.canvas.width, this.canvas.height, 60);
+        this.board = new Board(this.canvas.width, this.canvas.height, pieceSize);
+        const colorChooser:JQuery<HTMLSelectElement> = $("#colorChooser");
+        let e = colorChooser[0];
+        let color = this.colors[e.selectedIndex];
+        
+        this.board.defaultColors = color || this.colors[0];
+        this.board.renderLabels = $('#renderLabels').is(':checked');
         this.board.createCircleBoard(sz);
         this.render();
     }
