@@ -21,13 +21,42 @@ export class Point {
     }
 }
 
-export class Terrain {
+export class Cell {
+    public constructor(
+        public r: number,
+        public c: number
+    ) {
+        if (r <= -1000 || r >= 1000) {
+            throw new Error('Out of bounds');
+        }
+        if (c <= -1000 || c >= 1000) {
+            throw new Error('Out of bounds');
+        }
+    }
+
+    public static fnHash(r: number, c: number): number {
+        return (r + 1000) * 2000 + c;
+    }
+
+    public get hash() {
+        return Cell.fnHash(this.r, this.c);
+    }
+}
+
+export class Board {
     private readonly center: Point;
     private readonly wHalf: number; // Half Cell Width
     private readonly h4th: number; // 4th Cell Height
     private readonly hHalf: number; // Half Cell Height
     private readonly CellWidth: number;
     private readonly CellHeight: number;
+
+    private minR: number = undefined;
+    private maxR: number = undefined;
+    private minC: number = undefined;
+    private maxC: number = undefined;
+
+    private readonly cells = new Map<number, Cell>();
     
     public constructor(
         public readonly Width: number,
@@ -85,10 +114,10 @@ export class Terrain {
         }
     }
 
-    public drawCell(ctx: CanvasRenderingContext2D, r: number, c: number): void {
+    public drawCell(ctx: CanvasRenderingContext2D, r: number, c: number, clr: string = undefined): void {
         let p = this.getPos(r, c);
 
-        ctx.fillStyle = this.getCellColor(r, c);
+        ctx.fillStyle = clr || this.getCellColor(r, c);
         this.drawHex(ctx, p.x, p.y);
 
         ctx.strokeStyle = '#000000';
@@ -102,19 +131,59 @@ export class Terrain {
         ctx.strokeText(rt, p.x + this.hHalf / 2, p.y + this.h4th + 16);
     }
 
-    public render(ctx: CanvasRenderingContext2D): void {
-        ctx.strokeStyle = "#000000";
-        //ctx.lineWidth = 1;
+    public defineCell(r: number, c: number) {
+        let cell = new Cell(r, c);
+        this.cells.set(cell.hash, cell);
+        if (!this.minR || r < this.minR) {
+            this.minR = r;
+        }
+        if (!this.maxR || r > this.maxR) {
+            this.maxR = r;
+        }
+        if (!this.minC || c < this.minC) {
+            this.minC = c;
+        }
+        if (!this.maxC || c > this.maxC) {
+            this.maxC = c;
+        }
+
+        return cell;
+    }
+
+    public createCircleBoard(radiusPixels: number): void {
         let pOffset = new Point(this.wHalf, this.hHalf);
 
-        for (let r = -10; r <= 10; r++) {
-            for (let c = -10; c <= 10; c++) {
+        for (let r = -100; r <= 100; r++) {
+            for (let c = -100; c <= 100; c++) {
                 let p = this.getPos(r, c);
                 p.add(pOffset);
 
-                if (p.distance(this.center) < 300) {
-                    this.drawCell(ctx, r, c);
+                if (p.distance(this.center) < radiusPixels) {
+                    this.defineCell(r, c);
                 }
+            }
+        }
+    }
+
+    public getCell(r: number, c: number): Cell {
+        let hash = Cell.fnHash(r, c);
+        let cell = this.cells.get(hash);
+        return cell;
+    }
+
+    public render(ctx: CanvasRenderingContext2D): void {
+        ctx.strokeStyle = "#000000";
+        //let pOffset = new Point(this.wHalf, this.hHalf);
+
+        for (let r = this.minR; r <= this.maxR; r++) {
+            for (let c = this.minC; c <= this.maxC; c++) {
+                let cell = this.getCell(r, c);
+                if (!cell) {
+                    //this.drawCell(ctx, r, c, '#CCCCCC');
+                    continue;
+                }
+
+                this.drawCell(ctx, r, c);
             }
         }
 
