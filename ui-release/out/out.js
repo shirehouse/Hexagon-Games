@@ -111,13 +111,13 @@ var Terrain = /** @class */ (function () {
     Terrain.prototype.getCellColor = function (r, c) {
         var a = Math.abs(c - r + 1000) % 3;
         if (a === 0) {
-            return "#ffcccc";
+            return "#FFCBB5";
         }
         if (a === 1) {
-            return "#ccffcc";
+            return "#5DEF5D";
         }
         else {
-            return "#ccccff";
+            return "#0A0AC0";
         }
     };
     Terrain.prototype.drawCell = function (ctx, r, c) {
