@@ -55,9 +55,6 @@ export class TriCellColor {
     }
 }
 
-
-
-
 export class Board {
     private readonly center: Point;
     private readonly wHalf: number; // Half Cell Width
@@ -91,17 +88,28 @@ export class Board {
         this.center = new Point(midX, midY);
     }
 
+    public getCoods(x: number, y: number): Point[] {
+        return [
+            new Point(x + this.wHalf, y),
+            new Point(x + this.CellWidth, y + this.h4th),
+            new Point(x + this.CellWidth, y + (this.CellHeight - this.h4th)),
+            new Point(x + this.wHalf, y + this.CellHeight),
+            new Point(x, y + (this.CellHeight - this.h4th)),
+            new Point(x, y + this.h4th),
+            new Point(x + this.wHalf, y),
+        ];
+    }
+
     public drawHex(ctx: CanvasRenderingContext2D, x: number, y: number) {
         ctx.strokeStyle = '#000000';
         ctx.lineWidth = 2;
         ctx.beginPath();
-        ctx.moveTo(x + this.wHalf, y);
-        ctx.lineTo(x + this.CellWidth, y + this.h4th);
-        ctx.lineTo(x + this.CellWidth, y + (this.CellHeight - this.h4th));
-        ctx.lineTo(x + this.wHalf, y + this.CellHeight);
-        ctx.lineTo(x, y + (this.CellHeight - this.h4th));
-        ctx.lineTo(x, y + this.h4th);
-        ctx.lineTo(x + this.wHalf, y);
+        const points = this.getCoods(x, y);
+        ctx.moveTo(points[0].x, points[0].y);
+        for (let i = 1; i < points.length; i++) {
+            const p = points[i];
+            ctx.lineTo(p.x, p.y);
+        }
         ctx.closePath();
         ctx.stroke();
         ctx.fill();
@@ -229,5 +237,18 @@ export class Board {
         // Add a dot to mark the center
         // ctx.fillStyle = "#000000";
         // ctx.fillRect(this.center.x - 2, this.center.y - 2, 4, 4);
+    }
+
+    public getCells(): Cell[] {
+        return Array.from(this.cells.values());
+    }
+
+    public cellAt(x: number, y: number): Cell {
+        const rowHeight = this.CellHeight - this.h4th;
+        let yOffset = y - this.center.y;
+        let rDec = yOffset / rowHeight;
+        let r = -1 * Math.floor(rDec);
+        console.log(`Row: ${yOffset}, ${rDec} - ${r}`);
+        return undefined;
     }
 }

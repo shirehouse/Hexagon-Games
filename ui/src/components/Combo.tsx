@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-interface Item {
+export interface ComboItem {
   name: string
 }
 
@@ -10,13 +10,13 @@ export default class Combo extends React.Component {
 
   props: {
     selId: string,
-    items: Item[];
+    items: ComboItem[];
   }
 
   render() {
     const listItems = this.props.items.map((item) => {
       console.log(JSON.stringify(item));
-      return <option key='{item.name}' value='{item.name}'>{item.name}</option>
+      return <option key={item.name} value={item.name}>{item.name}</option>
     });
     const id = this.props.selId;
   return (
