@@ -1,5 +1,6 @@
 import { Main } from "./main";
 import { PlayerCell } from "../terrain/PlayerMap";
+import { OffscreenCanvas } from "../terrain/OffscreenCanvas";
 
 export class RandomPieceAction {
     private playerInterval: any;
@@ -21,10 +22,8 @@ export class RandomPieceAction {
     }
 
     private renderPlayers():void {
-        const playerCanvas = <HTMLCanvasElement>document.createElement("canvas");
-        playerCanvas.width = 800;
-        playerCanvas.height = 800;
-        let ctx = <CanvasRenderingContext2D>playerCanvas.getContext("2d");
+        Main.playerCanvas = new OffscreenCanvas();
+        let ctx = Main.playerCanvas.ctx;
 
         Main.playerMap.clear();
 
@@ -38,10 +37,6 @@ export class RandomPieceAction {
             Main.playerMap.set(i.toString(), pc);
         }
 
-        Main.playerMap.render(ctx);
-
-        let ctx2 = <CanvasRenderingContext2D>Main.canvas.getContext('2d');
-        ctx2.drawImage(Main.boardCanvas, 0, 0);
-        ctx2.drawImage(playerCanvas, 0, 0);
+        Main.render();
     }
 }

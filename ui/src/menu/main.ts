@@ -1,9 +1,12 @@
 import $ from 'jquery';
 import { Board, TriCellColor, Cell } from '../terrain/board';
-import { PlayerMap, PlayerCell } from '../terrain/PlayerMap';
+import { PlayerMap } from '../terrain/PlayerMap';
 import { ComboItem } from '../components/Combo';
 import { RandomPieceAction } from './RandomPieceAction';
 import { MoveAction } from './MoveAction';
+import { MoveManager } from '../terrain/MoveManager';
+import { OffscreenCanvas } from '../terrain/OffscreenCanvas';
+import { SelectManager } from '../terrain/SelectManager';
 
 export interface Action extends ComboItem {
     run(): void;
@@ -14,6 +17,7 @@ export class Main {
     public static canvas: HTMLCanvasElement;
     public static canvasMap: HTMLMapElement;
     public static boardCanvas: HTMLCanvasElement;
+    public static playerCanvas: OffscreenCanvas;
     public static load: JQuery<HTMLCanvasElement>;
     public static board: Board;
     public static colors: TriCellColor[];
@@ -21,6 +25,8 @@ export class Main {
     private static playerInterval: number;
     public static renderCellMap: () => void;
     public static cells: Cell[];
+    public static selectManager: SelectManager;
+    public static moveManager: MoveManager;
 
     public static main() {
         console.log('main...');
@@ -45,19 +51,13 @@ export class Main {
             console.log('action click...');
             this.onAction();
         }); 
-
-        c.click((e) => {
-            let x = e.clientX - this.canvas.offsetLeft;
-            let y = e.clientY - this.canvas.offsetTop;
-            console.log(`CANVAS CLICK: (${x},  ${y})`);
-            this.board.cellAt(x, y);
-        });
     }
 
     private static onRender(): void {
         this.boardCanvas = <HTMLCanvasElement>document.createElement("canvas");
         this.boardCanvas.width = 800;
         this.boardCanvas.height = 800;
+        this.playerCanvas = new OffscreenCanvas();
         this.canvasMap = <HTMLMapElement>document.createElement("canvasMap");
 
         let sz = parseInt(<string>$('#size').val());
@@ -65,6 +65,8 @@ export class Main {
         console.log('Size: ' + sz);
         this.board = new Board(this.canvas.width, this.canvas.height, pieceSize);
         this.playerMap = new PlayerMap(this.board);
+        this.selectManager = new SelectManager(this.board, this.playerMap);
+        this.moveManager = new MoveManager(this.board, this.selectManager, this.playerMap);
         const colorChooser:JQuery<HTMLSelectElement> = $("#colorChooser");
         let e = colorChooser[0];
         let color = this.colors[e.selectedIndex];
@@ -78,18 +80,25 @@ export class Main {
         }
     }
 
-    private static render(): void {
+    public static render(): void {
         let ctx = <CanvasRenderingContext2D>this.boardCanvas.getContext("2d");
 
-        ctx.clearRect(0, 0, 800, 800);
+        ctx.fillStyle = "#FFFFFF";
+        ctx.fillRect(0, 0, 800, 800);
 
         this.board.render(ctx);
 
         this.cells = this.board.getCells();
         this.renderCellMap();
+        this.selectManager.render(ctx);
+        this.moveManager.render(ctx);
+        
+        Main.playerCanvas = new OffscreenCanvas();
+        Main.playerMap.render(Main.playerCanvas.ctx);
 
         let ctx2 = <CanvasRenderingContext2D>this.canvas.getContext('2d');
         ctx2.drawImage(this.boardCanvas, 0, 0);
+        ctx2.drawImage(this.playerCanvas.canvas, 0, 0);
     }
 
     public static readonly actions: Action[] = [
@@ -115,5 +124,11 @@ export class Main {
 
         action.run();
         this.lastAction = action;
+    }
+
+    public static click(cell: Cell): void {
+        if (!this.moveManager.tryMove(cell)) {
+            this.selectManager.trySelect(cell);
+        }
     }
 }

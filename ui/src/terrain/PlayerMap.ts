@@ -7,6 +7,7 @@ let drawing = new Image();
 drawing.src = pawn2;
 
 export class PlayerCell extends Cell {
+    public key: string;
     public image: HTMLImageElement = drawing;
 }
 
@@ -40,6 +41,7 @@ export class PlayerMap {
             return;
         }
     
+        cell.key = key;
         this.playersByKey.set(key, cell);
         this.playersByHash.set(cell.hash, cell);
         return true;
@@ -58,5 +60,9 @@ export class PlayerMap {
             p.y += 5;
             ctx.drawImage(cell.image, p.x, p.y, size, size);
         });
+    }
+
+    public get(cell: Cell): PlayerCell {
+        return this.playersByHash.get(cell.hash);
     }
 }

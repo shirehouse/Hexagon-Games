@@ -16,7 +16,10 @@ export default class PolyMap extends React.Component {
       const coods = board.getCoods(c.x, c.y);
       const res = coods.map((p) => { return `${p.x},${p.y}` }).join(',');
       let onClick = () => {
-        alert(`${cell.c}, ${cell.r}`);
+        //alert(`${cell.c}, ${cell.r}`);
+        console.log(`Clicked: ${cell.c}, ${cell.r}`);
+        Main.click(cell);
+        Main.render();
       };
       return <area key={cell.hash} shape="poly" coords={res} onClick={onClick} alt="Test" />
     });

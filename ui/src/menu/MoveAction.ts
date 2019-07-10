@@ -1,22 +1,8 @@
 import { Main } from "./main";
 import { PlayerCell } from "../terrain/PlayerMap";
-
-export class OffscreenCanvas {
-    public readonly canvas: HTMLCanvasElement;
-    public readonly ctx: CanvasRenderingContext2D;
-
-    constructor() {
-        this.canvas = <HTMLCanvasElement>document.createElement("canvas");
-        this.canvas.width = Main.canvas.width;
-        this.canvas.height = Main.canvas.height;
-        
-        this.ctx = <CanvasRenderingContext2D>this.canvas.getContext("2d");
-    }
-}
+import { OffscreenCanvas } from "../terrain/OffscreenCanvas";
 
 export class MoveAction {
-    private playerCanvas: OffscreenCanvas;
-
     constructor(
         public readonly name: string,
         public readonly count: number
@@ -47,14 +33,8 @@ export class MoveAction {
     }
 
     private render():void {
-        this.playerCanvas = new OffscreenCanvas();
-
-        Main.playerMap.render(this.playerCanvas.ctx);
-
-        let ctx2 = <CanvasRenderingContext2D>Main.canvas.getContext('2d');
-        ctx2.drawImage(Main.boardCanvas, 0, 0);
-        ctx2.drawImage(this.playerCanvas.canvas, 0, 0);
+        Main.render();
     }
 
-    
+
 }
