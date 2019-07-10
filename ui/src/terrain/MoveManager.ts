@@ -45,6 +45,7 @@ export class MoveManager {
         }
         const player = this.playerMap.get(selected);
         const newPlayerCell = new PlayerCell(cell.r, cell.c);
+        newPlayerCell.image = player.image;
         this.playerMap.set(player.key, newPlayerCell);
         this.selectManager.selectedCell = undefined;
         Main.render();

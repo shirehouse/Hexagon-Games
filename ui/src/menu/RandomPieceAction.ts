@@ -1,5 +1,5 @@
 import { Main } from "./main";
-import { PlayerCell } from "../terrain/PlayerMap";
+import { PlayerCell, PlayerImages } from "../terrain/PlayerMap";
 import { OffscreenCanvas } from "../terrain/OffscreenCanvas";
 
 export class RandomPieceAction {
@@ -33,6 +33,7 @@ export class RandomPieceAction {
             const inx = Math.floor(Math.random() * cells.length);
             const cell = cells[inx];
             const pc = new PlayerCell(cell.r, cell.c);
+            pc.image = PlayerImages.random();
 
             Main.playerMap.set(i.toString(), pc);
         }

@@ -1,14 +1,41 @@
 import { Board, Cell } from "./board";
 import { HtmlAttributes } from "csstype";
 declare var require: any;
-const pawn2 = require('../assets/Pawn2.png');
+const pawn = require('../assets/Pawn2.png');
+const bishop = require('../assets/Bishop.png');
+const castle = require('../assets/Castle Rook.png');
+const king = require('../assets/King.png');
+const knight = require('../assets/Knight.png');
 
-let drawing = new Image();
-drawing.src = pawn2;
+function getImage(src: any): HTMLImageElement {
+    let drawing = new Image();
+    drawing.src = src;
+    return drawing;
+}
+
+export class PlayerImages {
+    public static readonly pawn = getImage(pawn);
+    public static readonly bishop = getImage(bishop);
+    public static readonly castle = getImage(castle);
+    public static readonly king = getImage(king);
+    public static readonly knight = getImage(knight);
+
+    public static readonly all = [
+        PlayerImages.pawn,
+        PlayerImages.bishop,
+        PlayerImages.castle,
+        PlayerImages.king,
+        PlayerImages.knight
+    ];
+
+    public static random(): HTMLImageElement {
+        return this.all[Math.floor(Math.random()*this.all.length)];
+    }
+}
 
 export class PlayerCell extends Cell {
     public key: string;
-    public image: HTMLImageElement = drawing;
+    public image: HTMLImageElement = PlayerImages.pawn;
 }
 
 export class PlayerMap {
