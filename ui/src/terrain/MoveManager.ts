@@ -43,6 +43,10 @@ export class MoveManager {
         if (!res) {
             return false;
         }
+        const attackee = this.playerMap.get(cell);
+        if (attackee) {
+            this.playerMap.remove(attackee.key);
+        }
         const player = this.playerMap.get(selected);
         const newPlayerCell = new PlayerCell(cell.r, cell.c);
         newPlayerCell.image = player.image;
