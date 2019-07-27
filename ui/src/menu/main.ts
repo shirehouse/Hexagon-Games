@@ -63,18 +63,13 @@ export class Main {
         const $canvasMap:JQuery<HTMLImageElement> = $("#canvasMap");
         this.canvasMap = $canvasMap[0];
 
-
         const $scrollRegion:JQuery<HTMLImageElement> = $("#scrollRegion");
         const scrollRegion = $scrollRegion[0];
-
-
 
         let sz = parseInt(<string>$('#size').val());
         let pieceSize = parseInt(<string>$('#pieceSize').val());
         console.log('Size: ' + sz);
         this.board = new Board(pieceSize);
-        this.selectManager = new SelectManager(this.board, this.playerMap);
-        this.moveManager = new MoveManager(this.board, this.selectManager, this.playerMap);
         const colorChooser:JQuery<HTMLSelectElement> = $("#colorChooser");
         let e = colorChooser[0];
         let color = this.colors[e.selectedIndex];
@@ -92,6 +87,8 @@ export class Main {
         scrollRegion.style.width = this.board.BoardWidth + "px";
         
         this.playerMap = new PlayerMap(this.board);
+        this.selectManager = new SelectManager(this.board, this.playerMap);
+        this.moveManager = new MoveManager(this.board, this.selectManager, this.playerMap);
         this.render();
         if (this.playerInterval) {
             clearInterval(this.playerInterval);
