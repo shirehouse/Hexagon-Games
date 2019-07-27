@@ -7,3 +7,13 @@
               user-select: none; /* Non-prefixed version, currently
                                     supported by Chrome and Opera */
   }
+
+  .scroll-box {
+    overflow: scroll;
+    height: 800px;
+    width: 800px;
+  }
+
+  .scroll-region {
+    overflow: hidden;
+  }

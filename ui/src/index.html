@@ -12,10 +12,14 @@
     <script src="./app.tsx"></script>
     <br/>
 
-    <canvas id="canvas" width="800" height="800"
-        style="position: absolute; top:100px; z-index: 1; border: 1px black solid;"></canvas><br/>
-    <img id="canvasMap" width="800" height="800" class="noselect"
-        style="position: absolute; top:100px; z-index: 1; border: 1px red solid; width: 800px; height: 800px;" usemap="#cellmap"/>
+    <div id="scrollBox" class="scroll-box">
+        <div id="scrollRegion" class="scroll-region">
+            <canvas id="canvas" width="800" height="800"
+                style="z-index: 1; border: 1px black solid;"></canvas><br/>
+            <img id="canvasMap" width="800" height="800" class="noselect"
+                style="position: relative; top: -800; z-index: 2; border: 1px red solid;" usemap="#cellmap"/>
+        </div>
+    </div>
 
     <div id="cellmapdiv"></div>
 </body>

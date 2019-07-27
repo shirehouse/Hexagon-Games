@@ -56,12 +56,14 @@ export class TriCellColor {
 }
 
 export class Board {
-    private readonly center: Point;
+    private center: Point;
     private readonly wHalf: number; // Half Cell Width
     private readonly h4th: number; // 4th Cell Height
     private readonly hHalf: number; // Half Cell Height
     private readonly CellWidth: number;
     private readonly CellHeight: number;
+    private boardWidth: number;
+    private boardHeight: number;
 
     private minR: number = undefined;
     private maxR: number = undefined;
@@ -73,8 +75,6 @@ export class Board {
     private readonly cells = new Map<number, Cell>();
     
     public constructor(
-        public readonly Width: number,
-        public readonly Height: number,
         public readonly Size: number
     ) {
         this.CellWidth = Math.floor(Size * 0.886);  // Size * sqrt(3/4)
@@ -82,10 +82,43 @@ export class Board {
         this.wHalf = Math.floor(this.CellWidth / 2);
         this.h4th = Math.floor(this.CellHeight / 4);
         this.hHalf = Math.floor(this.CellHeight / 2);
+    }
+
+
+    private calBoardSize(): void {
+        const cells = this.getCells();
+        let minR = 0;
+        let maxR = 0;
+        let minC = 0;
+        let maxC = 0;
+        for (const cell of cells) {
+            if (cell.r < minR) {
+                minR = cell.r;
+            }
+            if (cell.r > maxR) {
+                maxR = cell.r;
+            }
+            if (cell.c < minC) {
+                minC = cell.c;
+            }
+            if (cell.c > maxC) {
+                maxC = cell.c;
+            }
+        }
+        this.boardHeight = (maxR - minR - 1) * this.CellWidth;
+        this.boardWidth = (maxC - minC + 1) * this.CellWidth;
         
-        let midX = Math.floor(this.Height / 2);
-        let midY = Math.floor(this.Width / 2);
+        let midX = Math.floor(this.boardWidth / 2);
+        let midY = Math.floor(this.boardHeight / 2);
         this.center = new Point(midX, midY);
+    }
+
+    public get BoardWidth(): number {
+        return this.boardWidth;
+    }
+
+    public get BoardHeight(): number {
+        return this.boardHeight;
     }
 
     public getCoods(x: number, y: number): Point[] {
@@ -210,6 +243,8 @@ export class Board {
                 //}
             }
         }
+
+        this.calBoardSize();
     }
 
     public getCell(r: number, c: number): Cell {

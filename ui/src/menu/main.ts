@@ -15,7 +15,7 @@ export interface Action extends ComboItem {
 
 export class Main {
     public static canvas: HTMLCanvasElement;
-    public static canvasMap: HTMLMapElement;
+    public static canvasMap: HTMLImageElement;
     public static boardCanvas: HTMLCanvasElement;
     public static playerCanvas: OffscreenCanvas;
     public static load: JQuery<HTMLCanvasElement>;
@@ -54,17 +54,25 @@ export class Main {
     }
 
     private static onRender(): void {
-        this.boardCanvas = <HTMLCanvasElement>document.createElement("canvas");
+        const $board:JQuery<HTMLCanvasElement> = $("#canvas");
+
+        this.boardCanvas = $board[0];
         this.boardCanvas.width = 800;
         this.boardCanvas.height = 800;
         this.playerCanvas = new OffscreenCanvas();
-        this.canvasMap = <HTMLMapElement>document.createElement("canvasMap");
+        const $canvasMap:JQuery<HTMLImageElement> = $("#canvasMap");
+        this.canvasMap = $canvasMap[0];
+
+
+        const $scrollRegion:JQuery<HTMLImageElement> = $("#scrollRegion");
+        const scrollRegion = $scrollRegion[0];
+
+
 
         let sz = parseInt(<string>$('#size').val());
         let pieceSize = parseInt(<string>$('#pieceSize').val());
         console.log('Size: ' + sz);
-        this.board = new Board(this.canvas.width, this.canvas.height, pieceSize);
-        this.playerMap = new PlayerMap(this.board);
+        this.board = new Board(pieceSize);
         this.selectManager = new SelectManager(this.board, this.playerMap);
         this.moveManager = new MoveManager(this.board, this.selectManager, this.playerMap);
         const colorChooser:JQuery<HTMLSelectElement> = $("#colorChooser");
@@ -74,6 +82,16 @@ export class Main {
         this.board.defaultColors = color || this.colors[0];
         this.board.renderLabels = $('#renderLabels').is(':checked');
         this.board.createCircleBoard(sz);
+        this.boardCanvas.width = this.board.BoardWidth;
+        this.boardCanvas.height = this.board.BoardHeight;
+        this.canvasMap.width = this.board.BoardWidth;
+        this.canvasMap.height = this.board.BoardHeight;
+        this.canvasMap.style.top = "-" + this.board.BoardHeight + "px";
+
+        scrollRegion.style.height = this.board.BoardHeight + "px";
+        scrollRegion.style.width = this.board.BoardWidth + "px";
+        
+        this.playerMap = new PlayerMap(this.board);
         this.render();
         if (this.playerInterval) {
             clearInterval(this.playerInterval);
