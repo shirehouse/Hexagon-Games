@@ -1,12 +1,11 @@
 {
-  "name": "scorched",
+  "name": "shire-hex-games",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "parcel src/index.html ./assets/**/*",
-    "build2": "rm -rf ./dist/* && parcel build src/index.html ./assets/**/*",
-    "build": "tsc && browserify ./dist/index.js -o ./out/out.js",
+    "start": "parcel src/index.html ./assets/**/*",
+    "build": "rm -rf ./dist/* && parcel build src/index.html ./assets/**/*",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",

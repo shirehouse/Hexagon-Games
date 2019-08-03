@@ -2,4 +2,4 @@
 Shirehouse computer learning project involving Hexagon based games
 
 # API REF:
-http://wiki.vanderbokke.net/Shire/HexGames/API
+https://github.com/shirehouse/Hexagon-Games/wiki/Hex-Games-API
