@@ -1,0 +1,18 @@
+if player = 1 [
+set player name "White";
+];
+if player = 0 [
+set player name "Black";
+];
+if piece color = player name [
+set piece move enable = true;
+];
+if piece color /= player name [
+set piece move enable = false;
+];
+if cell > |board_def| [
+set possible_piece_moves = false;
+];
+if piece color /= set piece color [
+set capture = true;
+];
