@@ -1,0 +1,28 @@
+{
+  "name": "shire-hex-games",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "parcel src/index.html ./assets/**/*",
+    "build": "rm -rf ./dist/* && parcel build src/index.html ./assets/**/*",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "jquery": "^3.3.1",
+    "random-js": "^2.0.0-rc2"
+  },
+  "devDependencies": {
+    "@types/jquery": "^3.3.29",
+    "@types/random-js": "^1.0.31",
+    "@types/react": "^16.8.22",
+    "@types/react-dom": "^16.8.4",
+    "browserify": "^16.2.3",
+    "parcel-bundler": "^1.12.3",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "typescript": "^3.5.2"
+  }
+}
